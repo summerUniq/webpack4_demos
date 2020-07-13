@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -14,6 +16,13 @@ module.exports = {
         progress: true,
         open: false,
     },
+    optimization: {
+        minimizer: [new OptimizeCssAssetsWebpackPlugin(), new UglifyjsWebpackPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true,
+        })]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html', // 指定模板
@@ -23,32 +32,33 @@ module.exports = {
                 collapseWhitespace: true, // 压缩空白行
             },
             hash: true, // 引用bundle.js时添加hash戳
-        })
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'main.css' // 抽离后的文件样式名
+        }),
     ],
     module: {
         rules: [{
                 test: /\.css$/,
-                use: [{
-                        loader: 'style-loader',
-                        options: {
-                            insert: function(element) {
-                                var parent = document.querySelector('head');
-                                var lastInsertedElement = window._lastElementInsertedByStyleLoader;
-                                if (!lastInsertedElement) {
-                                    parent.insertBefore(element, parent.firstChild);
-                                } else if (lastInsertedElement.nextSibling) {
-                                    parent.insertBefore(element, lastInsertedElement.nextSibling)
-                                } else {
-                                    parent.appendChild(element)
-                                }
-
-                            }
-                        },
-                    },
-                    'css-loader'
+                use: [MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'postcss-loader'
                 ]
             },
-            { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: loader => [require('autoprefixer')({ browsers: ['> 0.15% in CN'] })]
+                        }
+                    },
+                    'less-loader'
+                ]
+            },
         ]
     }
 }

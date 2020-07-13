@@ -1,4 +1,4 @@
-const a = require('./a.js')
+var a = require('./a.js')
 
 require('./main.css');
 require('./main.less')

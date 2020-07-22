@@ -1,0 +1,16 @@
+body {
+    background-color: burlywood;
+}
+body {
+    background-color: brown;
+}
+body div {
+  border: 1px solid blue;
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+

@@ -25,4 +25,3 @@
             hash: true,
         })]
 ```
-# source-map

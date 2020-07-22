@@ -3603,9 +3603,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _bab
   !*** ./src/images/1.jpg ***!
   \**************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = \"https://m.yqb.com/10674ffef7a2c22254c898e6ac47d19b.jpg\";\n\n//# sourceURL=webpack:///./src/images/1.jpg?");
+eval("module.exports = __webpack_require__.p + \"/img/10674ffef7a2c22254c898e6ac47d19b.jpg\";\n\n//# sourceURL=webpack:///./src/images/1.jpg?");
 
 /***/ }),
 

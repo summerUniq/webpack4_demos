@@ -57,7 +57,6 @@ module.exports = {
                         esModule: false, // 不加的话会有这种情况 img属性src="[object Module]"
                         limit: 1, // 当小于100kb时候生产base64  
                         outputPath: '/img/',
-                        publicPath: 'https://m.yqb.com'
                     }
                 }
             },
@@ -94,12 +93,11 @@ module.exports = {
                             "@babel/plugin-transform-runtime"
                         ]
                     },
-
-
                 }],
                 include: path.resolve(__dirname, "src"), // 查找范围
                 exclude: /node_modules/, // 不查找文件
             }
         ]
-    }
+    },
+    // devtool: "source-map"
 }

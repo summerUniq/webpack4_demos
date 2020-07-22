@@ -4,7 +4,7 @@ body {
 div {
   width: 600px;
   height: 200px;
-  background: url(https://m.yqb.com/ee10a9f07ae29eb34523f0be5b552dd8.jpg);
+  background: url(/img/ee10a9f07ae29eb34523f0be5b552dd8.jpg);
 }
 
 body {
@@ -14,7 +14,7 @@ body {
 div {
     width: 600px;
     height: 200px;
-    background: url(https://m.yqb.com/ee10a9f07ae29eb34523f0be5b552dd8.jpg);
+    background: url(/img/ee10a9f07ae29eb34523f0be5b552dd8.jpg);
 }
 body {
   background-color: brown;

@@ -1,0 +1,1 @@
+console.log('other 入口');

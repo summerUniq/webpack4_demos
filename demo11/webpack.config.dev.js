@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
-// const webpack = require('webpack');
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -31,33 +30,45 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html', // 指定模板
             filename: 'index.html', // 引入打包后js的html的文件名
-            minify: {
-                removeAttributeQuotes: true, // 压缩双引号
-                collapseWhitespace: true, // 压缩空白行
-            },
+            minify: false,
+            // minify: {
+            //     removeAttributeQuotes: true, // 压缩双引号
+            //     collapseWhitespace: true, // 压缩空白行
+            // },
             hash: true, // 引用bundle.js时添加hash戳
         }),
         new MiniCssExtractPlugin({
             filename: 'main.css' // 抽离后的文件样式名
         }),
-        // new webpack.ProvidePlugin({
-        //     $: 'jquery'
-        // })
     ],
     module: {
         rules: [
             // {
-            //     test: require.resolve('jquery'),
-            //     use: {
-            //         loader: "expose-loader",
+            //     test: /\.(png|jpg|svg|jpeg)$/,
+            //     use: [{
+            //         loader: 'file-loader',
             //         options: {
-            //             exposes: {
-            //                 globalName: '$'
-            //             }
+            //             esModule: false
             //         }
-            //     }
+            //     }]
             // },
+            {
+                test: /\.(png|jpg|svg|jpeg)$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        esModule: false, // 不加的话会有这种情况 img属性src="[object Module]"
+                        limit: 1024 * 100, // 当小于100kb时候生产base64                   
+                    }
+                }
+            },
+            {
+                test: /\.(html|htm)$/,
+                use: [{
+                    loader: 'html-withimg-loader',
 
+                }]
+            },
 
             {
                 test: /\.css$/,

@@ -1,7 +1,18 @@
-var a = require('./a.js')
+const a = require('./a.js')
 
 require('./main.css');
 require('./main.less')
 
 
 console.log("我是index模块");
+
+@log
+class A {
+    a = 1;
+}
+let b = new A()
+console.log(b.a);
+
+function log(target) {
+    console.log(target);
+}

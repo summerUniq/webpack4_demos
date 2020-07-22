@@ -9,7 +9,7 @@ module.exports = {
         filename: 'bundle.[hash:8].js', // 指定每次打包时文件名含hash戳，位数是8位
         path: path.resolve(__dirname, 'build'),
     },
-    mode: 'production',
+    mode: 'development',
     devServer: {
         port: 3000,
         contentBase: './build',
@@ -59,6 +59,33 @@ module.exports = {
                     'less-loader'
                 ]
             },
+            // {
+            //     test: /\.js$/,
+            //     use:[{
+            //         loader: 'eslint-loader',
+            //         options: {
+            //             enforce: "pre"
+            //         }
+            //     }],
+            // },
+            {
+                test: /\.js$/,
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["@babel/preset-env"],
+                         plugins: [
+                        ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+                        ['@babel/plugin-proposal-class-properties', { "loose": true }],
+                        "@babel/plugin-transform-runtime"
+                    ]
+                    },
+                   
+
+                }],
+                include: path.resolve(__dirname, "src"),// 查找范围
+                exclude: /node_modules/, // 不查找文件
+            }
         ]
     }
 }

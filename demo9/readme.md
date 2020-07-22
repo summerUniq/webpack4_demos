@@ -1,83 +1,131 @@
-# 打包后样式文件的抽离，link标签的引入
-- 安装插件 ```yarn add mini-css-extract-plugin -D```
+# babel-将es6/es7语法转化成es5语法
+
+1- es6 语法
+- 安包 
+```yarn add babel-loader @babel/core @babel/preset-env -D```
+- 配置 - (es6转成es5)
+```
+     {
+                test: /\.js$/,
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["@babel/preset-env"]
+                    }
+                }]
+            }
+ ```
+2- es6 高级语法转化成es5  ----  @babel/plugin-proposal-class-properties; @babel/plugin-proposal-decorators
+- 安包
+```
+yarn add  @babel/plugin-proposal-class-properties @babel/plugin-proposal-decorators -D
+```
+
 - 配置
 ```
-    plugins: [
-        new MiniCssExtractPlugin({
-
-        })
-    ],
-    module: {
-        rules: [{
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader,
-                    'css-loader'
-                ]
-            },
-            { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] },
-        ]
-    }
-```
-# 打包后css文件的压缩和js文件的压缩
-- 安装插件 ```yarn add optimize-css-assets-webpack-plugin -D```
-- 配置
-```
- optimization: {
-        minimizer: [new OptimizeCssAssetsWebpackPlugin()]
-    }
-```
-- 压缩js uglifyjs-webpack-plugin
-```
-yarn add uglifyjs-webpack-plugin -D
-```
-```
-    optimization: {
-        minimizer: [new OptimizeCssAssetsWebpackPlugin(), new UglifyjsWebpackPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true,
-        })]
-```
-需要避免有es6语法，不然会报错
-
-
-# css样式自动添加前缀
-- 安装npm 包 + loader autoprefixer + postcss-loader
-```
-yarn add autoprefixer postcss-loader -D
-```
-- 配置
- 1- 添加配置文件 postcss.config.js 告诉postcss-loader使用什么插件
- ```
- // postcss.config.js
- module.exports = {
-    plugins: [require('autoprefixer')]
-}
-
- ```
- 2- 在css-loader使用前添加post-loader, 并进行插件的配置
-
- ```
-  {
-                test: /\.less$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: loader => [require('autoprefixer')({ browsers: ['> 0.15% in CN'] })]
-                        }
+{
+                test: /\.js$/,
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["@babel/preset-env"],
+                         plugins: [
+                        ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+                        ['@babel/plugin-proposal-class-properties', { "loose": true }]
+                    ]
                     },
-                    'less-loader'
-                ]
+                   
+
+                }]
+            }
+```
+3- 装饰器语法报错的解决
+Experimental support for decorators is a feature that is subject to change in a future release. Set the 'experimentalDecorators' option in your 'tsconfig' or 'jsconfig' to remove this warning.ts(1219)
+
+- 新增配置文件jsconfig.json
+```
+// jsconfig.json
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+    }
+}
+```
+- 重启vscode
+
+4- 内置api 和promise的转化---- @babel/plugin-transform-runtime(必配)
+- 代码
+```
+function * gen(params) {
+    yield 1;
+}
+console.log(gen().next());
+```
+- npm run dev 
+控制台报错
+Uncaught ReferenceError: regeneratorRuntime is not defined
+原因：打包对gen进行了解析, 使用到了regeneratorRuntime， 但是不会自动帮引入这个api
+- 安包
+```yarn add @babel/plugin-transform-runtime -D```
+```yarn add @babel/runtime --save```
+- 配置
+```
+ {
+                test: /\.js$/,
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["@babel/preset-env"],
+                         plugins: [
+                        ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+                        ['@babel/plugin-proposal-class-properties', { "loose": true }],
+                        "@babel/plugin-transform-runtime" // 新增插件
+                    ]
+                    },
+                   
+
+                }],
+                include: path.resolve(__dirname, "src"),// 查找范围
+                exclude: /node_modules/, // 不查找文件
+            }
+```
+
+5- 解析实例上的方法 ---- 
+实例上的方法默认不会解析
+- 代码
+```
+// a.js
+"SSS".includes("S")
+```
+- npm run build 
+ return _context.stop();\n      }\n    }\n  }, _marked);\n}\n\nconsole.log(gen().next());\n\"SSS\".includes('S');\n\n//# sourceURL=webpack:///./src/a.js?");
+可以看到代码没有被解析
+- 安包
+yarn add @babel/polyfill
+- 引用包
+```
+// a.js
+require('@babel/polyfill');
+"SSS".includes("S")
+```
+
+6- js添加校验 -- eslint
+- 安包
+yarn add eslint eslint-loader
+- 配置文件 .eslintrc.json 新建 (官网--DEMO-download)
+- 配置 新增moudule.rules, 设计执行的顺序，强制优先执行 enforce: "pre"  
+
+```
+       {
+                test: /\.js$/,
+                use:[{
+                    loader: 'eslint-loader',
+                    options: {
+                        enforce: "pre"
+                    }
+                }],
             },
- ```
+```
 
 
 
-# 总结：
-
-- 抽离css打包后的css样式, link标签引入 mini-css-extract-plugin 
-    (需要自己压缩生产的css文件: 需要插件optimize-css-assets-webpack-plugin,在配置文件中添加optimization; 影响： mode: production失效，需要使用插件压缩打包后的js: uglifyjs-webpack-plugin)
-- 自动添加前缀 autoprefixer包 postcss-loader 需要配置文件 postcss.config.js

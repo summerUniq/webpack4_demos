@@ -12,7 +12,7 @@ module.exports = {
         filename: '[name].[hash:8].js',
         path: path.resolve(__dirname, 'build'),
     },
-    mode: 'development',
+    mode: 'production',
     devServer: {
         port: 3000,
         contentBase: './build',
@@ -99,5 +99,11 @@ module.exports = {
             }
         ]
     },
-    // devtool: "source-map"
+    devtool: "source-map",
+    watch: true,
+    watchOptions: {
+        poll: 1000,
+        aggregateTimeout: 500,
+        ignored: /node_modules/
+    }
 }

@@ -25,3 +25,14 @@
             hash: true,
         })]
 ```
+# watch 的使用----实现实时打包
+```
+// webpack.config.js
+watch: true,
+watchOptions: {
+    poll: 1000, // 每秒问我1000次
+    aggregateTimeout: 500, // 防抖，停止输入代码500s后打包文件
+    ignored: /node_modules/,  // 不需要监控哪个文件
+}
+
+```

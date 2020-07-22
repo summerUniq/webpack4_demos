@@ -14,7 +14,7 @@ import './a.css'
 require('@babel/polyfill');
 
 console.log('我是a模块');
-
+console.log('zheshixinder mojjjjgfkjgbkdsgbdfbgfmbgb');
 class B {
 
 }

@@ -10,7 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, 'build'),
         // publicPath: "https://m.yqb.com"
     },
-    mode: 'development',
+    mode: 'production',
     devServer: {
         port: 3000,
         contentBase: './build',
@@ -47,7 +47,7 @@ module.exports = {
                         esModule: false, // 不加的话会有这种情况 img属性src="[object Module]"
                         limit: 1, // 当小于100kb时候生产base64  
                         outputPath: '/img/',
-                        publicPath: 'https://m.yqb.com'
+                        // publicPath: 'https://m.yqb.com'
                     }
                 }
             },
@@ -91,5 +91,6 @@ module.exports = {
                 exclude: /node_modules/, // 不查找文件
             }
         ]
-    }
+    },
+    devtool: "cheap-module-source-map"
 }

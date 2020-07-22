@@ -8,6 +8,7 @@ require('./main.less')
 
 
 console.log("我是index模块");
+console.lo(1111111111111111111);
 
 @log
 class A {

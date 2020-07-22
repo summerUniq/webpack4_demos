@@ -47,5 +47,14 @@ rules: [{
                     }
                 }
  },
- 
+
 ```
+# source-map: production模式下如果代码报错无法定位，souce-map源码映射帮助代码调试
+- devtool: "source-map" 
+    单独生成一个sourcemap文件，标识出错的行列
+- devtool: "eval-source-map"
+    不会产生单独的文件，标识出错的行列
+- devtool: "cheap-module-source-map"
+    产生一个单独的映射文件， 不标识错误列
+- devtool: "cheap-moudle-eval-source-map"
+    不产生文件，集成在打包后的文件中，不标识错误列

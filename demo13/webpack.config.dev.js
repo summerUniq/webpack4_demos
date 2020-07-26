@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 module.exports = {
     entry: {
         home: './src/index.js',
@@ -46,7 +49,18 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: 'css/main.css'
-        })
+        }),
+        new CleanWebpackPlugin(),
+        // new CopyWebpackPlugin([{
+        //     patterns: [{ from: __dirname + '/demo13/doc', to: __dirname + "/demo13/build/doc" }]
+        // }])
+        new CopyWebpackPlugin({
+            patterns: [{
+                from: './doc',
+                to: './doc'
+            }]
+        }),
+        new webpack.BannerPlugin('我是summer 2020.07.23')
     ],
     module: {
         rules: [{
@@ -100,10 +114,10 @@ module.exports = {
         ]
     },
     devtool: "source-map",
-    watch: true,
-    watchOptions: {
-        poll: 1000,
-        aggregateTimeout: 500,
-        ignored: /node_modules/
-    }
+    // watch: true,
+    // watchOptions: {
+    //     poll: 1000,
+    //     aggregateTimeout: 500,
+    //     ignored: /node_modules/
+    // }
 }

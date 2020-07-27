@@ -25,6 +25,30 @@
             hash: true,
         })]
 ```
+
+# 多页面应用抽离公共代码
+
+```
+ optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors:  {
+                     priority: 1, // 优先抽取
+                     test: /[\\/]node_modules[\\/]/,
+                    chunks: 'initial',
+                    // minSize: 0, // 公共代码大小超过0字节
+                    // minChunks: 1, // 使用次数超过1次
+                    },
+                common: {
+                    chunks:'initial',
+                    minSize: 0,
+                    minChunks: 2,
+                },
+            }
+                
+        },
+```
+
 # watch 的使用----实现实时打包
 ```
 // webpack.config.js

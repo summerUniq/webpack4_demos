@@ -26,6 +26,23 @@ module.exports = {
         jquery: "$"
     },
     optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors:  {
+                     priority: 1, // 优先抽取
+                     test: /[\\/]node_modules[\\/]/,
+                    chunks: 'initial',
+                    // minSize: 0, // 公共代码大小超过0字节
+                    // minChunks: 1, // 使用次数超过1次
+                    },
+                common: {
+                    chunks:'initial',
+                    minSize: 0,
+                    minChunks: 2,
+                },
+            }
+                
+        },
         minimizer: [new OptimizeCssAssetsWebpackPlugin(), new UglifyjsWebpackPlugin({
             cache: true,
             parallel: true,
@@ -113,7 +130,7 @@ module.exports = {
             }
         ]
     },
-    devtool: "source-map",
+    // devtool: "source-map",
     // watch: true,
     // watchOptions: {
     //     poll: 1000,

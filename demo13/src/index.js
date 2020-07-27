@@ -1,7 +1,8 @@
-require('jquery')
+import $ from 'jquery'
 console.log("window.$", window.$);
 console.log('$', $);
 const a = require('./a.js')
+import common from './common.js';
 
 require('./main.css');
 require('./main.less')
